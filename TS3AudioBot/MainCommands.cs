@@ -1179,7 +1179,12 @@ namespace TS3AudioBot
 		public static Task CommandPmUser(Ts3Client ts3Client, ushort clientId, string message) => ts3Client.SendMessage(message, (ClientId)clientId);
 
 		[Command("pause")]
-		public static void CommandPause(Player playerConnection) => playerConnection.Paused = !playerConnection.Paused;
+		public static string CommandPause(Player playerConnection)
+		{
+			playerConnection.Paused = !playerConnection.Paused;
+
+			return "[COLOR=#aa0000]⏸ Paused[/COLOR]";
+		}
 
 		[Command("play")]
 		public static async Task CommandPlay(PlayManager playManager, Player playerConnection, InvokerData invoker)
@@ -1386,6 +1391,7 @@ namespace TS3AudioBot
 		public static async Task<JsonArray<AudioResource>> PropagiateSearch(UserSession session, CallerInfo callerInfo, ResolveContext resolver, string resolverName, string query)
 		{
 			var list = await resolver.Search(resolverName, query);
+			
 			session.Set(SessionConst.SearchResult, list);
 			return FormatSearchResult(list, callerInfo);
 		}
